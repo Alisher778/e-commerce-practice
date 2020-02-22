@@ -4,10 +4,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const logger = require('morgan');
+const flash = require('express-flash-messages')
 const port = 3000;
 
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
+const productsRouter = require('./routes/products');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -45,8 +47,11 @@ app.use((req, res, next) => {
   next()
 });
 
+app.use(flash())
+
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/products', productsRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

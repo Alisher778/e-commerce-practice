@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Users = require('../models/users');
 const bcrypt = require('bcrypt');
+const flash = require('express-flash-messages')
 
 /* GET home page. */
 router.get('/sign-in', (req, res, next) => {
@@ -27,7 +28,7 @@ router.post('/sign-in', (req, res, next) => {
           res.redirect('/auth/sign-in');
         }
       } else {
-        res.redirect('/auth/sign-up')
+        res.redirect('/auth/sign-in')
       }
 
 
@@ -79,15 +80,19 @@ router.post('/store/sign-in', (req, res, next) => {
     .findAll({ where: { email: email, type: 'admin' } })
     .then(async (user) => {
 
-      const currentUser = user[0];
-      const hashedPassword = await bcrypt.compare(req.body.password, currentUser.password);
-      if (hashedPassword) {
-        req.session.userId = currentUser.id;
-        req.session.userType = currentUser.type;
-        req.session.email = currentUser.email;
-        req.session.name = currentUser.name;
+      if (user.length) {
+        const currentUser = user[0];
+        const hashedPassword = await bcrypt.compare(req.body.password, currentUser.password);
+        if (hashedPassword) {
+          req.session.userId = currentUser.id;
+          req.session.userType = currentUser.type;
+          req.session.email = currentUser.email;
+          req.session.name = currentUser.name;
 
-        res.redirect('/');
+          res.redirect('/');
+        } else {
+          res.redirect('/auth/store/sign-in');
+        }
       } else {
         res.redirect('/auth/store/sign-in');
       }
