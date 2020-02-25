@@ -14,7 +14,7 @@
                                 <i class="fas fa-heart"></i>
                             </a>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body position-relative">
                             <h4 class="card-title">
                                 <%= item.name%>
                             </h4>
@@ -32,8 +32,10 @@
                                     </h5>
                                 </div>
 
-                                <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+
                             </div>
+                            <a href="/products/<%= item.id%>/edit" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i> Edit</a>
+                            <a href="/products/<%= item.id%>/delete" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Delete</a>
                         </div>
                     </div>
                 </div>

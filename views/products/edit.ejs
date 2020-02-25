@@ -1,0 +1,70 @@
+<%- include ../Partials/header.ejs %>
+
+    <div class="container">
+        <form class="form-horizontal" method="POST" action="/products/<%= data.id %>/edit" enctype="multipart/form-data">
+
+            <div class="text-center mb-5">
+                <h2>Add product</h2>
+                <img src="<%= data.img %>" alt="product img" class="rounded-circle border" style="max-width: 200px;" onerror="this.src='/images/default-product.webp'">
+            </div>
+            <div class="row">
+                <!-- Text input-->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_name">PRODUCT NAME</label>
+                    <input id="product_name" value="<%= data.name %>" name="name" placeholder="PRODUCT NAME" class="form-control input-md" required="" type="text">
+
+                </div>
+
+                <!-- Select Basic -->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_categorie">PRODUCT CATEGORY</label>
+                    <select name="categoryId" class="form-control" value="<%= data.categoryId %>"></select>
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_price">PRODUCT price</label>
+                    <input type="number" class="form-control" id="price" value="<%= data.price %>" name="price"></input>
+                </div>
+                <!-- Textarea -->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_salePrice">PRODUCT salePrice</label>
+                    <input type="number" class="form-control" id="salePrice" value="<%= data.salePrice %>" name="salePrice"></input>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="available_quantity">AVAILABLE QUANTITY</label>
+                    <input type="number" id="available_quantity" value="<%= data.quantity %>" name="quantity" placeholder="AVAILABLE QUANTITY" class="form-control input-md" required="" type="text">
+
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_categorie">PRODUCT CATEGORY</label>
+                    <select name="unitType" class="form-control" value="<%= data.unitType %>">
+                        <option value="piece">Pieces</option>
+                        <option value="kg">KG</option>
+                      </select>
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="product_description">PRODUCT DESCRIPTION</label>
+                    <textarea class="form-control" id="description" value="<%= data.description %>" name="description"></textarea>
+                </div>
+                <input type="hidden" name="categoryName" value="products">
+                <input type="hidden" name="oldImg" value="<%= data.img %>">
+                <div class="form-group col-md-6">
+                    <label class="control-label" for="filebutton">image</label>
+                    <input id="filebutton" name="img" class="input-file" type="file">
+                </div>
+
+            </div>
+
+            <!-- Button -->
+            <button type="submit" id="singlebutton" class="btn btn-primary">Update</button>
+        </form>
+    </div>

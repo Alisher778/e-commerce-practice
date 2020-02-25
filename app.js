@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const logger = require('morgan');
 const flash = require('express-flash-messages')
+const MySQLStore = require('express-mysql-session')(session);
 const port = 3000;
 
 const authRouter = require('./routes/auth');
@@ -24,10 +25,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var options = {
+  host: 'localhost',
+  user: 'user',
+  password: 'password',
+  database: 'bazar',
+  clearExpired: true,
+  checkExpirationInterval: 10000
+};
+
+var sessionStore = new MySQLStore(options);
+
 app.use(session({
   secret: 'dsjkhfsdhfjsdh jfbsdjfgds bfshd jfjhsdgfjhsdjh',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  store: sessionStore,
 }))
 
 // Auth check middleware
