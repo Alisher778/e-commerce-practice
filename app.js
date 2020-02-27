@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const logger = require('morgan');
-const flash = require('express-flash-messages')
+const flash = require('express-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const port = 3000;
 
@@ -43,6 +43,8 @@ app.use(session({
   store: sessionStore,
 }))
 
+
+app.use(flash())
 // Auth check middleware
 app.use((req, res, next) => {
   const { userId, email, userType, name } = req.session;
@@ -51,6 +53,11 @@ app.use((req, res, next) => {
   res.locals.email = email || null;
   res.locals.userType = userType || null;
   res.locals.name = name || null;
+  // ------- For flash messages
+  res.locals.flash = req.session.flash;
+  console.log(req.session);
+
+  delete req.session.flash;
   // if (whiteList.includes(req.url) || userId) {
   //   next()
   // } else {
@@ -60,7 +67,6 @@ app.use((req, res, next) => {
   next()
 });
 
-app.use(flash())
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);

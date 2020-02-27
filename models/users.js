@@ -7,7 +7,8 @@ const User = sequlize.define('User', {
   },
   email: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    unique: true,
   },
   img: {
     type: DataTypes.TEXT

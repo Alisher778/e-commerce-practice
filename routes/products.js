@@ -5,8 +5,14 @@ const fs = require('fs');
 const path = require('path');
 
 router.get('/', (req, res) => {
+  const { userId, userType } = req.session;
+  let query = {};
+  if (userType === 'admin') {
+    query = { where: { storeId: userId } }
+  }
+
   Products
-    .findAll()
+    .findAll(query)
     .then(data => {
       res.render('products/index', { data });
     })
@@ -22,10 +28,17 @@ router.get('/new', (req, res) => {
 
 router.post('/new', multer.single('img'), (req, res) => {
   const { userId = 1 } = req.session;
-  const { filename } = req.file;
+  let data = {};
+  if (req.file) {
+    const { filename } = req.file;
+    data = { ...req.body, storeId: userId, img: '/uploads/products/' + filename }
+  } else {
+    data = { ...req.body, storeId: userId }
+  }
+
 
   Products
-    .create({ ...req.body, storeId: userId, img: '/uploads/products/' + filename })
+    .create(data)
     .then(data => {
       res.redirect('/products');
     })

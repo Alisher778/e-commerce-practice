@@ -2,17 +2,23 @@
 
     <div class="container">
         <h2>Sig In</h2>
-        <form action="/auth/sign-in" method="POST">
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" name="email">
+        <% if(flash){%>
+
+            <div class="alert alert-danger">
+                <%= flash.error %>
             </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" name="password">
-            </div>
-            <div class="form-group form-check">
-                <button class="btn btn-primary">Sign In</button>
-            </div>
-        </form>
+            <%}%>
+                <form action="/auth/sign-in" method="POST">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <div class="form-group form-check">
+                        <button class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
     </div>

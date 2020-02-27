@@ -25,10 +25,12 @@ router.post('/sign-in', (req, res, next) => {
 
           res.redirect('/');
         } else {
+          req.flash('error', 'Email/password is wrong');
           res.redirect('/auth/sign-in');
         }
       } else {
-        res.redirect('/auth/sign-in')
+        req.flash('error', 'The account does not exist');
+        res.redirect('/auth/sign-in');
       }
 
 
@@ -54,12 +56,13 @@ router.post('/sign-up', async (req, res, next) => {
 
       res.redirect('/');
     })
-    .catch(err => res.send(err.message))
+    .catch(err => {
+      const errors = err.errors.map(item => item.message);
+      req.flash('error', errors);
+      res.redirect('/auth/sign-up');
+    })
 });
 
-router.get('/store/sign-up', (req, res, next) => {
-  res.render('Auth/signUp');
-});
 
 /* ======================================================
 ---------------------- ADMIN  --------------------------
@@ -72,6 +75,7 @@ router.get('/store/', (req, res, next) => {
 
 router.get('/store/sign-in', (req, res, next) => {
   res.render('Auth/admin/signIn');
+  console.log('Admin path');
 });
 
 router.post('/store/sign-in', (req, res, next) => {
@@ -91,18 +95,25 @@ router.post('/store/sign-in', (req, res, next) => {
 
           res.redirect('/');
         } else {
+          req.flash('error', 'Email or password is wrong');
           res.redirect('/auth/store/sign-in');
         }
       } else {
+        req.flash('error', 'The account does not exist');
         res.redirect('/auth/store/sign-in');
       }
 
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const errors = err.errors.map(item => item.message);
+      req.flash('error', errors);
+      res.redirect('/auth/store/sign-up');
+    })
 });
 
 router.get('/store/sign-up', (req, res, next) => {
   res.render('Auth/admin/signUp');
+
 });
 
 router.post('/store/sign-up', async (req, res, next) => {
@@ -118,7 +129,11 @@ router.post('/store/sign-up', async (req, res, next) => {
 
       res.redirect('/');
     })
-    .catch(err => res.send(err.message))
+    .catch(err => {
+      const errors = err.errors.map(item => item.message);
+      req.flash('error', errors);
+      res.redirect('/auth/store/sign-up');
+    })
 });
 
 
