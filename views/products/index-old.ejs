@@ -1,0 +1,98 @@
+<%- include ../Partials/header.ejs %>
+
+    <div class="container">
+        <div class="row">
+
+            <% data.forEach(item => {%>
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4 my-3">
+                    <div class="card">
+
+                        <div class="img-wrapper" style="background: url(<%= item.img %>) no-repeat center; background-size: cover;">
+                            <!-- <img class="card-img" src=<%=item.img? item.img : '/images/default-product.webp'%> alt="Vans" onerror="this.src='/images/default-product.webp'"> -->
+                        </div>
+
+                        <div class="card-img-overlay d-flex justify-content-end">
+                            <a href="#" class="card-link text-danger like">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                        </div>
+                        <div class="card-body position-relative">
+                            <h4 class="card-title">
+                                <%= item.name%>
+                            </h4>
+                            <h6 class="card-subtitle mb-2 text-muted">1
+                                <%= item.unitType%>
+                            </h6>
+                            <!-- <p class="card-text">
+                                <%= item.description%>
+                            </p> -->
+                            <div class="buy d-flex justify-content-between align-items-center">
+                                <div class="price text-success">
+                                    <h5 class="mt-4">
+                                        $
+                                        <%= item.salePrice%>
+                                    </h5>
+                                </div>
+
+
+                            </div>
+                            <% if(userType ==='admin'){%>
+                                <a href="/products/<%= item.id%>/edit" class="btn btn-primary mt-3"><i class="fas fa-shopping-cart"></i> Edit</a>
+                                <a href="/products/<%= item.id%>/delete" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Delete</a>
+                                <% }else{%>
+                                    <button type="button" onclick="getProduct(<%=item.id%>)" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Add To Cart
+                                  </button>
+
+                                    <% }%>
+                        </div>
+                    </div>
+                </div>
+                <% })%>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="img-wrapper" id="p-banner"></div>
+                    <div class="modal-header">
+
+                        <h5 class="modal-title" id="p-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="p-description"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <span>
+                        $ <strong id="p-price"></strong>
+                      </span>
+                        <span>
+                          <input type="number" value="1" size="6">
+                        </span>
+                        <button type="button" class="btn btn-primary">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getProduct(id) {
+            fetch('/products/' + id)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+
+                    document.getElementById('p-title').innerHTML = data.name;
+                    document.getElementById('p-description').innerHTML = data.description;
+                    document.getElementById('p-price').innerHTML = data.salePrice;
+                    document.getElementById('p-banner').style.cssText = `background: url(${data.img}) no-repeat center; background-size: cover;`
+                })
+        }
+    </script>
+
+    <%- include ../Partials/footer.ejs %>

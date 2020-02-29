@@ -5,3 +5,11 @@ body {
 a {
     color: #00B7FF;
 }
+
+
+/* ----------- Products Page ------------ */
+
+.img-wrapper {
+    height: 150px;
+    overflow: hidden;
+}

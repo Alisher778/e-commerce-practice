@@ -48,6 +48,17 @@ router.post('/new', multer.single('img'), (req, res) => {
 
 // --------------- EDIT PRODUCT ----------------
 
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+
+  Products
+    .findByPk(id)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => res.render('Partials/error', { error: err.message }))
+
+});
 router.get('/:id/edit', (req, res) => {
   const { id } = req.params;
 
