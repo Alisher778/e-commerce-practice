@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequlize = require('../DB/database');
 
-const Sales = sequlize.define('Sale', {
+const Cart = sequlize.define('Cart', {
   clientId: {
     type: DataTypes.INTEGER
   },
@@ -19,4 +19,4 @@ const Sales = sequlize.define('Sale', {
   }
 });
 
-module.exports = Sales;
+module.exports = Cart;

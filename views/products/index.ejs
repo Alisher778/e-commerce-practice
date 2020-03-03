@@ -27,7 +27,7 @@
                                               <del><%= item.salePrice%></del>
                                             </small>
                                         </h5>
-                                        <button onclick="getProduct(<%=item.id%>)" data-toggle="modal" data-target="#exampleModal" class="btn btn-secondary rounded-circle">
+                                        <button onclick="getProduct(<%=item.id%>)" data-toggle="modal" data-target="#exampleModalScrollable" class="btn btn-secondary rounded-circle">
                                           <i class="fa fa-shopping-cart"></i> 
                                         </button>
                                     </div>
@@ -41,76 +41,94 @@
         </div>
 
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
                 <div class="modal-content">
-                    <div class="img-wrapper" id="p-banner"></div>
-                    <div class="modal-header">
-
-                        <h5 class="modal-title" id="p-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="p-description"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <span>
-                        $ <strong id="p-price"></strong>
-                      </span>
-                        <span>
-                          <input type="number" value="1" size="6" id="p-qty">
-                        </span>
-                        <button type="button" id="add-to-cart-btn" class="btn btn-primary" onclick="addToCart()">Add to cart</button>
+                    <div class="modal-body" style="margin: 0; padding: 0; position: relative; font-family: 'Spartan', sans-serif;">
+                        <button type="button" onclick="clearModal()" id="modal-close-btn" style="position: absolute; right: 8px; top: 8px;" class="close" data-dismiss="modal">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                        <div id="modalProduct">
+                            <div id="productImage">
+                                <img src="" id="p-img" style="width: 100%; border: 1px solid #212529;" alt="">
+                            </div>
+                            <div id="productSale">
+                                <h3 style="font-size: 22px; font-weight: 800;" id="p-title"></h3>
+                                <h3 style="font-size: 22px; font-weight: 800;" id="p-price"></h3>
+                                <p style="font-size: 15px;" id="p-description"></p>
+                                <h6 id="p-id"></h6>
+                                <div style="display: flex; justify-content: space-evenly; align-items: center; flex-direction: row;">
+                                    <div style="border: 1px solid black; border-radius: 4px;">
+                                        <button onclick="quantityMinus()" style="width: 40px; height: 35px; font-size: 23px; font-weight: 600; border: none; outline: none; background-color: #212529; color: white;">-</button>
+                                        <input type="number" value="1" required min="1" id="p-qty" style="font-size: 20px; width: 50px; border: none; text-align: center; outline: none;">
+                                        <button onclick="quantityPlus()" style="width: 40px; height: 35px; font-size: 23px; font-weight: 600; border: none; outline: none; background-color: #212529; color: white;">+</button>
+                                        <script>
+                                            const quantityMinus = () => {
+                                                document.getElementById("p-qty").stepUp(-1);
+                                            };
+                                            const quantityPlus = () => {
+                                                document.getElementById("p-qty").stepUp(1);
+                                            };
+                                        </script>
+                                    </div>
+                                    <button class="btn btn-primary" id="add-to-cart" style="background-color: #212529 !important; outline: none !important; font-size: 15px !important;" onclick="addToCart()">Add to Card</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function getProduct(id) {
-            fetch('/products/' + id)
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
+        <script>
+            function clearModal() {
+                document.getElementById('p-title').innerHTML = '';
+                document.getElementById('p-qty').value = 1;
+                document.getElementById('p-description').innerHTML = '';
+                document.getElementById('p-price').innerHTML = '';
+                document.getElementById('p-img').setAttribute('src', '');
+                document.getElementById('p-img').setAttribute('src', '');
+                // document.getElementById('add-to-cart-btn').setAttribute('data-id', ``);
+            }
 
-                    document.getElementById('p-title').innerHTML = data.name;
-                    document.getElementById('p-description').innerHTML = data.description;
-                    document.getElementById('p-price').innerHTML = data.salePrice;
-                    document.getElementById('p-banner').style.cssText = `background: url(${data.img}) no-repeat center; background-size: cover;`;
-                    document.getElementById('add-to-cart-btn').setAttribute('data-id', `${data.id}`);
-                })
-        }
+            function getProduct(id) {
+                fetch('/products/' + id)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
 
-        function addToCart() {
-            const productId = document.getElementById('add-to-cart-btn').getAttribute('data-id');
-            const qty = document.getElementById('p-qty').value;
-            // const color = document.getElementById('p-color').value || 'red';
-            // const size = document.getElementById('p-select').value || 'small';
-            console.log(productId, qty, JSON.stringify({
-                productId: productId,
-                qty: qty
-            }));
-
-            fetch('/sales/new', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        qty: qty
+                        document.getElementById('p-title').innerHTML = data.name;
+                        document.getElementById('p-description').innerHTML = data.description;
+                        document.getElementById('p-price').innerHTML = data.salePrice;
+                        document.getElementById('p-img').setAttribute('src', data.img);
+                        document.getElementById('add-to-cart').setAttribute('data-id', `${data.id}`);
                     })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-                })
-                .catch(err => console.log(err))
-        }
-    </script>
+            }
 
-    <%- include ../Partials/footer.ejs %>
+            function addToCart() {
+                const productId = document.getElementById('add-to-cart').getAttribute('data-id');
+                const qty = document.getElementById('p-qty').value;
+
+                fetch('/cart/new', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            productId: productId,
+                            qty: qty
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            clearModal();
+                            document.getElementById('modal-close-btn').click();
+                        }
+                        console.log(data)
+                    })
+                    .catch(err => console.log(err))
+            }
+        </script>
+
+        <%- include ../Partials/footer.ejs %>

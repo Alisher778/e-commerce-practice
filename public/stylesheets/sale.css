@@ -1,0 +1,11 @@
+#sale-page td {
+    line-height: 40px;
+    padding: 0 7px;
+}
+
+#sale-page td span {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    overflow: hidden;
+}

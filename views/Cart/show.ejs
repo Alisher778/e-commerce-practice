@@ -1,0 +1,51 @@
+<%- include ../Partials/header.ejs %>
+    <link rel="stylesheet" href="stylesheets/sale.css">
+
+    <div class="container" id="sale-page">
+        <h3>Order List</h3>
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(item => {%>
+                    <tr>
+                        <td class="text-left">
+                            <span>
+                              <img src="<%= item.img%>" alt="" class="img-fluid">
+                             </span>
+                            <b><%= item.name %></b>
+                        </td>
+                        <td>
+                            <%= item.qty%>
+                        </td>
+                        <td>
+                            <%= item.salePrice%>
+                        </td>
+                        <td>
+                            <%= (item.salePrice * item.qty) %>
+                        </td>
+                    </tr>
+                    <%})%>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>--------</td>
+                            <td>
+                                <%= data.reduce((total, item) => total+= (item.salePrice * item.qty), 0) %>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+    <%- include ../Partials/footer.ejs %>
