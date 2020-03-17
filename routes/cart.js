@@ -7,16 +7,31 @@ router.get('/', (req, res) => {
   const { userId, userType } = req.session;
   console.log(req.session);
 
-  const SeaerchQuary = sequelize.query(`SELECT * FROM Carts AS MyCart INNER JOIN Products ON Products.id = MyCart.productId WHERE MyCart.clientId = ${userId} `)
+  const SearchQuary = sequelize.query(`SELECT * FROM Carts AS MyCart INNER JOIN Products ON Products.id = MyCart.productId WHERE MyCart.clientId = ${userId} `)
 
-  SeaerchQuary
+  SearchQuary
     .then(data => {
-      console.log(data);
-
       res.render('Cart/show', { data: data[0] });
     })
     .catch(err => {
       res.render('partials/error', { error: err.message });
+    })
+
+});
+
+router.get('/get-cart-info', (req, res) => {
+  const { userId, userType } = req.session;
+  const SearchQuary = sequelize.query(`SELECT * FROM Carts AS MyCart INNER JOIN Products ON Products.id = MyCart.productId WHERE MyCart.clientId = ${userId} `)
+  console.log(SearchQuary);
+
+  SearchQuary
+    .then(data => {
+      res.json({ data: data[0], success: true });
+      console.log(data[0]);
+
+    })
+    .catch(err => {
+      res.json({ error: err.message, success: false });
     })
 
 });

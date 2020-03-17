@@ -1,0 +1,20 @@
+<%- include ../Partials/header.ejs %>
+
+    <div class="container">
+        <h2>Reset password</h2>
+
+        <form action="/auth/reset-password" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+            <input type="email" name="email" hidden value="" id="email">
+            <script>
+                var email = new URLSearchParams(window.location.search).get('email');
+                document.getElementById('email').value = email;
+            </script>
+            <div class="form-group form-check">
+                <button class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+    </div>

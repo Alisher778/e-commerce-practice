@@ -7,12 +7,15 @@ const logger = require('morgan');
 const flash = require('express-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const port = 3000;
+const nodemailer = require('./utils/email');
 
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
+const salesRouter = require('./routes/sales');
 const usersRouter = require('./routes/users');
+
 
 const app = express();
 
@@ -32,7 +35,7 @@ var options = {
   password: 'password',
   database: 'bazar',
   clearExpired: true,
-  checkExpirationInterval: 10000
+  checkExpirationInterval: 1000
 };
 
 var sessionStore = new MySQLStore(options);
@@ -43,6 +46,7 @@ app.use(session({
   saveUninitialized: false,
   store: sessionStore,
 }))
+nodemailer;
 
 
 app.use(flash())
@@ -73,6 +77,7 @@ app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter);
+app.use('/sales', salesRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

@@ -28,6 +28,10 @@ const User = sequlize.define('User', {
   phone: {
     type: DataTypes.INTEGER
   },
+  resetToken: {
+    type: DataTypes.STRING,
+    defaultValue: null
+  },
   type: {
     defaultValue: 'customer',
     type: DataTypes.STRING
